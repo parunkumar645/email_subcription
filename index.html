@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Subscription</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="hero">
+      <h3>Coming Soon!</h3>
+      <h1>
+        Our Brand New <br />
+        Website Is On Its Way
+      </h1>
+      <p>Subscribe for more Details</p>
+      <form name="subscription-form">
+        <label for="email">Your email id</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Your email id"
+          required
+        />
+        <button type="submit">
+          <img src="images/send-icon.png" alt="Send" width="30px" />
+        </button>
+      </form>
+      <div id="msg" role="alert" aria-live="polite"></div>
+    </div>
+
+    <script>
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbyfd6H1cjO7bXbQwZ0xSpf2mdIoaN3rDsIrZeMPXfrZ2mmJOMcHy9bPUwTD5-Ah24P7/exec";
+      const form = document.forms["subscription-form"];
+      const msg = document.getElementById("msg");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        msg.textContent = "Subscribing...";
+
+        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+          .then((response) => {
+            if (response.ok) {
+              msg.textContent = "Thank you for subscribing!";
+              setTimeout(function () {
+                msg.textContent = "";
+              }, 5000);
+              form.reset();
+            } else {
+              throw new Error("Failed to subscribe.");
+            }
+          })
+          .catch((error) => {
+            msg.textContent = "Error: " + error.message;
+          });
+      });
+    </script>
+  </body>
+</html>
